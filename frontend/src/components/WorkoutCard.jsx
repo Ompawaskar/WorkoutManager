@@ -1,10 +1,10 @@
 import React from 'react'
 import { useWorkoutContext } from '../hooks/useWorkoutContext';
+import {formatDistanceToNow} from 'date-fns';
 
-function WorkoutCard({title,reps,load,id}) {
+function WorkoutCard({title,reps,load,id,createdAt}) {
     const {workouts,dispatch} = useWorkoutContext()
     const deleteWorkout = async (e) => {
-        console.log(id);
         const response = await fetch(`http://localhost:4000/api/workouts/${id}`,{
             method:"DELETE",  
         })
@@ -24,8 +24,9 @@ function WorkoutCard({title,reps,load,id}) {
                 <img src="./delete.png" alt="" />
             </button>
             </div>
-            <h3 className='font-semibold font-sans'>Reps:{reps}</h3>
-            <h3 className='font-semibold font-sans'>Load(kg):{load}</h3>
+            <h3 className='font-semibold font-sans'>Reps: {reps}</h3>
+            <h3 className='font-semibold font-sans'>Load(kg): {load}</h3>
+            <p className='text-gray-400 font-sans text-sm'>{formatDistanceToNow(new Date(createdAt),{addSuffix:true})}</p>
         </div>
     )
 }

@@ -5,7 +5,6 @@ import {useWorkoutContext} from '../hooks/useWorkoutContext'
 
 const Home = () => {
     const {workouts,dispatch} = useWorkoutContext();
-    console.log(workouts);
 
     useEffect(() => {
         const fetch_workouts = async () => {
@@ -22,7 +21,7 @@ const Home = () => {
     }, [])
 
     return (
-        <div className='flex  gap-8'>
+        <div className='flex gap-8 '>
             <div className='w-3/5 bg-white ml-8 mt-4'>
             {workouts && (
                 <ul>
@@ -33,6 +32,7 @@ const Home = () => {
                                 reps={workout.reps}
                                 load={workout.load}
                                 id={workout._id}
+                                createdAt={workout.createdAt}
                             />
                         </li>
                     ))}

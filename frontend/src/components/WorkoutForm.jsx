@@ -30,7 +30,7 @@ function WorkoutForm() {
             setTitle("");
             setLoad("");
             setReps("");
-            dispatch({type:"CREATE_WORKOUT", payload:workout})
+            dispatch({type:"CREATE_WORKOUT", payload:result})
         }
 
         else {
