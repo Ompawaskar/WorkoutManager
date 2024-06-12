@@ -4,22 +4,32 @@ import {
     TextInput,
 } from 'flowbite-react';
 import { useWorkoutContext } from '../hooks/useWorkoutContext';
+import { useAuthContext } from '../hooks/useAuthContext'
 
 function WorkoutForm() {
     const [title, setTitle] = useState("");
     const [reps, setReps] = useState("");
     const [load, setLoad] = useState("");
     const [error, setError] = useState("");
-    const {workouts, dispatch} = useWorkoutContext();
+    const { workouts, dispatch } = useWorkoutContext();
+    const { user } = useAuthContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const workout = { title, reps: Number(reps), load: Number(load) };
 
+        if (!user) {
+            setError("You must be Logged In");
+            return
+        }
+
         const response = await fetch('http://localhost:4000/api/workouts', {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+
+                "Authorization": `Bearer ${user.token}`
+
             },
             body: JSON.stringify(workout)
         });
@@ -30,7 +40,7 @@ function WorkoutForm() {
             setTitle("");
             setLoad("");
             setReps("");
-            dispatch({type:"CREATE_WORKOUT", payload:result})
+            dispatch({ type: "CREATE_WORKOUT", payload: result })
         }
 
         else {
@@ -82,7 +92,7 @@ function WorkoutForm() {
             <button type='submit' className='bg-green-500 p-2 font-sans text-white rounded w-4/5 mt-4'>Add Workout</button>
             {error && <div>
                 {error}
-                </div>}
+            </div>}
         </form>
     );
 }
